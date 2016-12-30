@@ -120,14 +120,14 @@ exports.methods = {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-1. Commit `this.state`, send notification, return `good`
-2. Roll back `this.state`, ignore notification, return application error
+1. Commit `this.state`, send notif, return `good`
+2. Roll back `this.state`, ignore notif, return app error
 3. Ditto, but return system error that closes client session
 
 and **then** process the next request
 
 ---
-### Client Code
+### Client Code: WebSocket on steroids
 ```
 var URL = 'http://root-hello.vcap.me/#from=foo-ca1&ca=foo-ca1';
 var s = new caf_cli.Session(URL);
@@ -142,13 +142,11 @@ s.onopen = function() {
     });
 }
 s.onclose = function(err) {
-    err && console.log(myUtils.errToPrettyStr(err));//System error
+    err && console.log(myUtils.errToPrettyStr(err));//System err
     !err && console.log('Done OK');
 }
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
-
-WebSocket on steroids
 
 * `s` dynamically populated with method `foo`
 * Ordered requests with transparent retries
@@ -224,7 +222,7 @@ exports.methods = {
         var oldVer = this.state.__ca_version__;
         if (semver.valid(oldVer) && semver.valid(newVer) &&
             semver.satisfies(newVer, '^' + oldVer)) {
-            this.$.log.debug('Minor version: transparent update');
+            this.$.log.debug('Minor version:transparent update');
         } else {
             this.$.log.debug('Major version change:' + newVer);
             // do some magic to this.state
@@ -264,12 +262,12 @@ Pick your poison:
 * Data replicated across actors, multicast updates
 * Some combination of the above
 
-Better to use distributed data structures that benefit from local shared-memory
+Faster to use distributed data structures that benefit from local shared-memory
 <!-- .element:  style="text-align:left" -->
 
 Combine DDS + Actors?
 
-Without data races, deadlocks, ugly failure mode?
+**Without data races, deadlocks, ugly failure mode?**
 
 ---
 ### DDS + Actors = Actors
@@ -298,9 +296,9 @@ Can actors emulate the Jocker's actions?
 ---
 ### DDS + Actors = Actors
 
-**Not** in the general case.
+**Not** in the general case
 
-But **yes** in the following important case (Mohsen&Lain13):
+But **yes** in the following **important** case (Lesani&Lain13):
 
 1. *Single Writer*: one actor *owns* the data structure
 
@@ -310,14 +308,81 @@ But **yes** in the following important case (Mohsen&Lain13):
 
 4. *Writer Atomicity*: changes are flushed, as an atomic unit, when the processing of a message finishes.
 
-5. *Consistency*: monotonic read consistency, i.e., replicas can be stale, but they never roll back to older versions.
-
-
+5. *Consistency*: monotonic read consistency, i.e., replicas can be stale, but never roll back to older versions.
 
 ---
+<!-- .element:  style="text-align:left" -->
+### SharedMap
+<!-- .element:  style="text-align:center; text-transform:none" -->
 
+*Readers Isolation* + *Fairness* requires multiple local versions
 
+* Use a persistent data structure (*Immutable.js*) for efficient versioning
+* For each message, pick the most recent version that is locally available
+* For a CA, keep version until the next message
 
+*Writer Atomicity*: Use a CAF.js transactional plugin
+
+*Consistency*: Keep track of version numbers
+
+*Single Writer*: a *SharedMap* name is relative to its CA
+
+---
+<!-- .element:  style="text-align:left" -->
+### SharedMap Example
+<!-- .element:  style="text-align:center; text-transform:none" -->
+
+```
+exports.methods = {
+    __ca_init__: function(cb) {
+        isAdm(this) && this.$.sharing.addWritableMap('ms', ADM);
+        this.$.sharing.addReadOnlyMap('slave', masterMap(this));
+        cb(null);
+    },
+    increment: function(cb) { // Only called by `admin`
+        var $$ = this.$.sharing.$;
+        var counter = $$.ms.get('counter') || 0;
+        $$.ms.set('counter', counter + 1);
+        cb(null, counter);
+    },
+    getCounter: function(cb) {
+        cb(null, this.$.sharing.$.slave.get('counter'));
+    }
+};
+```
+<!-- .element: class="hljs javascript" spellCheck="false" -->
+
+* Each user has an `admin` CA that keeps a counter in a *SharedMap*
+
+* CAs can use `masterMap()` and `isAdm()` to find it
+
+---
+<!-- .element:  style="text-align:left" -->
+### Share code, not only data
+<!-- .element:  style="text-align:center" -->
+
+Pure functions serialized and stored in a *SharedMap*:
+
+    setFun(methodName, argsNameArray, bodyString)
+
+Invoked as a method of the *SharedMap*:
+
+    applyMethod(methodName, argsArray)
+
+Example:
+
+```
+var body = "return prefix + (this.get('base') + Math.random());";
+$$.master.setFun('computeLabel', ['prefix'], body);
+...
+$$.slave.applyMethod('computeLabel', ['myPrefix']));
+```
+<!-- .element: class="hljs javascript" spellCheck="false" -->
+
+Uses:
+* Getters/setters hide schema versioning, event filtering, policy enforcement,...
+
+---
 ## Authorization
 
 ![](foo-programming/assets/pig_linked.svg)
