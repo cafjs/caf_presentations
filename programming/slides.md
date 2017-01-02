@@ -2,7 +2,7 @@
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 
-![](foo-programming/assets/pig.svg)
+![](process.env.CA_NAME/assets/pig.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 by Antonio Lain
@@ -11,7 +11,7 @@ by Antonio Lain
 
 ## Actors
 
-![](foo-programming/assets/pig_actors.svg)
+![](process.env.CA_NAME/assets/pig_actors.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 ---
@@ -245,7 +245,7 @@ Compare checkpointed state schema vs code schema:
 ---
 ## Sharing Actors
 
-![](foo-programming/assets/pig_sharing.svg)
+![](process.env.CA_NAME/assets/pig_sharing.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 ---
@@ -266,7 +266,7 @@ Compare checkpointed state schema vs code schema:
 ---
 ### DDS + Actors = Actors
 
-![](foo-programming/assets/sharing1.svg)
+![](process.env.CA_NAME/assets/sharing1.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 The Jocker can
@@ -278,7 +278,7 @@ The Jocker can
 ---
 ### DDS + Actors = Actors
 
-![](foo-programming/assets/sharing2.svg)
+![](process.env.CA_NAME/assets/sharing2.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 Can actors emulate the Jocker's actions?
@@ -369,7 +369,7 @@ Uses:
 ---
 ## Authorization
 
-![](foo-programming/assets/pig_linked.svg)
+![](process.env.CA_NAME/assets/pig_linked.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 ---
@@ -492,7 +492,7 @@ exports.methods = {
 
 ## Persistent Sessions
 
-![](foo-programming/assets/pig_sessions.svg)
+![](process.env.CA_NAME/assets/pig_sessions.svg)
 <!-- .element:  width="500" heigh="500" -->
 ---
 
@@ -576,7 +576,7 @@ s.onmessage = function(msg) {
 ---
 ## Components
 
-![](foo-programming/assets/pig_components.svg)
+![](process.env.CA_NAME/assets/pig_components.svg)
 <!-- .element:  width="500" heigh="500" -->
 
 ---
@@ -740,7 +740,7 @@ exports.newInstance = function($, spec, cb) {
 ### Transforming Descriptions
 <!-- .element:  style="text-align:center" -->
 
-![](foo-programming/assets/Transforms.svg)
+![](process.env.CA_NAME/assets/Transforms.svg)
 <!-- .element:  width="900" heigh="350" -->
 
 * Typical Cloud deployment workflow
@@ -837,7 +837,7 @@ exports.newInstance = function($, spec, cb) {
 ---
 ### Wrapping up
 
-![](foo-programming/assets/pig.svg)
+![](process.env.CA_NAME/assets/pig.svg)
 <!-- .element:  width="300" heigh="300" -->
 
 
