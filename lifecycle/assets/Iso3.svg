@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="590" height="610" viewBox="0, 0, 590, 610">
+  <g id="Layer_1">
+    <path d="M27.227,413.672 L567.227,413.672 L567.227,587.495 L27.227,587.495 z" fill="#FF8080"/>
+    <text transform="matrix(1, 0, 0, 1, 141.227, 41.672)">
+      <tspan x="-88.059" y="8" font-family="Helvetica" font-size="33" fill="#000000">caf_helloiot/</tspan>
+    </text>
+    <path d="M63.727,438.172 L111.727,438.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M138.525,390.205 L186.525,390.205" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M147.727,534.172 L195.727,534.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M63.727,195.74 L111.727,195.74" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <text transform="matrix(1, 0, 0, 1, 165.227, 437.672)">
+      <tspan x="-43.111" y="8" font-family="Helvetica" font-size="33" fill="#000000">public</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 285.227, 485.672)">
+      <tspan x="-75.201" y="8" font-family="Helvetica" font-size="33" fill="#000000">index.html</tspan>
+    </text>
+    <path d="M147.727,486.172 L195.727,486.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M147.727,450.172 L147.727,534.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <text transform="matrix(1, 0, 0, 1, 219.227, 533.672)">
+      <tspan x="-11.916" y="8" font-family="Helvetica" font-size="33" fill="#000000">js</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 327.227, 569.672)">
+      <tspan x="-44.03" y="8" font-family="Helvetica" font-size="33" fill="#000000">app.js</tspan>
+    </text>
+    <path d="M219.727,570.172 L267.727,570.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M219.727,546.172 L219.727,570.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <g>
+      <path d="M27.227,221.672 L567.227,221.672 L567.227,413.672 L27.227,413.672 z" fill="#E0E0E0"/>
+      <text transform="matrix(1, 0, 0, 1, 141.227, 245.672)">
+        <tspan x="-17.427" y="8" font-family="Helvetica" font-size="33" fill="#000000">iot</tspan>
+      </text>
+      <path d="M63.727,246.172 L111.727,246.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <text transform="matrix(1, 0, 0, 1, 249.227, 281.672)">
+        <tspan x="-55.945" y="8" font-family="Helvetica" font-size="33" fill="#000000">index.js</tspan>
+      </text>
+      <text transform="matrix(1, 0, 0, 1, 207.227, 317.672)">
+        <tspan x="-16.508" y="8" font-family="Helvetica" font-size="33" fill="#000000">lib</tspan>
+      </text>
+      <path d="M135.727,282.172 L183.727,282.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <path d="M207.727,354.172 L255.727,354.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <path d="M135.727,318.172 L183.727,318.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <text transform="matrix(1, 0, 0, 1, 375.227, 350.172)">
+        <tspan x="-106.388" y="11.5" font-family="Helvetica" font-size="33" fill="#000000">iot_methods.js</tspan>
+      </text>
+      <text transform="matrix(1, 0, 0, 1, 291.227, 389.672)">
+        <tspan x="-97.236" y="8" font-family="Helvetica" font-size="33" fill="#000000">package.json</tspan>
+      </text>
+      <path d="M135.727,258.172 L135.727,390.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <path d="M207.727,330.172 L207.727,354.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+      <text transform="matrix(1, 0, 0, 1, 526.35, 259.631)">
+        <tspan x="-23.84" y="8" font-family="Helvetica" font-size="33" fill="#000000">IoT</tspan>
+      </text>
+    </g>
+    <path d="M27.227,59.495 L567.227,59.495 L567.227,227.85 L27.227,227.85 z" fill="#80FF80"/>
+    <path d="M135.727,158.067 L183.727,158.067" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M63.727,122.926 L111.727,122.926" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <text transform="matrix(1, 0, 0, 1, 135.227, 122.426)">
+      <tspan x="-16.508" y="8.572" font-family="Helvetica" font-size="33" fill="#000000">lib</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 303.227, 154.151)">
+      <tspan x="-106.388" y="11.989" font-family="Helvetica" font-size="33" fill="#000000">ca_methods.js</tspan>
+    </text>
+    <path d="M135.727,134.64 L135.727,158.067" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <text transform="matrix(1, 0, 0, 1, 219.227, 204.463)">
+      <tspan x="-97.236" y="1.699" font-family="Helvetica" font-size="33" fill="#000000">package.json</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 519.227, 99.87)">
+      <tspan x="-22.921" y="8.572" font-family="Helvetica" font-size="33" fill="#000000">CA</tspan>
+    </text>
+    <text transform="matrix(1, 0, 0, 1, 512.105, 449.672)">
+      <tspan x="-33.636" y="8" font-family="Helvetica" font-size="33" fill="#000000">Web</tspan>
+    </text>
+    <path d="M135.727,390.205 L183.727,390.205" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M67.194,195.74 L115.194,195.74" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <path d="M63.727,59.995 L63.727,587.995" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+    <text transform="matrix(1, 0, 0, 1, 177.227, 78.652)">
+      <tspan x="-55.945" y="7.021" font-family="Helvetica" font-size="33" fill="#000000">index.js</tspan>
+    </text>
+    <path d="M63.727,78.172 L111.727,78.172" fill-opacity="0" stroke="#000000" stroke-width="3.5"/>
+  </g>
+</svg>
