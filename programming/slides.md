@@ -15,16 +15,20 @@ by Antonio Lain
 <!-- .element:  width="500" heigh="500" -->
 
 ---
+<!-- .slide: class="two-floating-elements-70"  style="float: left" -->
+<!-- .element:  style="text-align:left" -->
+### A CAF.js ACTOR HAS
+<!-- .element:  style="text-align:center; text-transform:none" -->
 
-### A CAF.js actor has:
+![](process.env.CA_NAME/assets/Actor.svg)
+<!-- .element: class="plain" style="float: right" width="30%" -->
+* a queue that serializes message processing
+* a location-independent name
+* some private state
+* the ability to change behavior
+* or interact with other actors
 
-* a queue that serializes message processing,
-* a location-independent name,
-* some private state,
-* the ability to change behavior,
-* or interact with other actors.
-
-Initial design based on Erlang/OTP *gen_server*.
+Initial design based on Erlang/OTP *gen_server*
 
 ---
 
@@ -100,32 +104,18 @@ Keeping a consistent internal state
 * programmed by back-end newbies.
 
 ---
-### Implementing a transactional actor
-```
-exports.methods = {
-    foo: function(something, cb) {
-        this.state.something = something;
-        this.$.session.notify("Got 'good'");
-        setTimeout(function() {
-            switch (something) {
-            case 'good':
-                cb(null, something); break; // Case 1
-            case 'bad':
-                cb(new Error('bad')); break; // Case 2
-            default:  // ugly
-                throw new Error('Oops'); // Case 3
-            }
-        }, 1000);
-    }
-}
-```
-<!-- .element: class="hljs javascript" spellCheck="false" -->
+### CAF.js ACTORS TO THE RESCUE
+<!-- .element:  style="text-align:center; text-transform:none" -->
 
-1. Commit `this.state`, send notif, return `good`
-2. Roll back `this.state`, ignore notif, return app error
-3. Ditto, but return system error that closes client session
+![](process.env.CA_NAME/assets/Rescue.svg)
 
-and **then** process the next request
+* No races
+  * Serialized message processing
+* Zalgo locked up
+  * Decoupling queue
+* Recover from failures gracefully
+  * Request processed in a transaction
+  * Checkpoint state before externalize
 
 ---
 ### Client Code: WebSocket on steroids
@@ -151,15 +141,39 @@ s.onclose = function(err) {
 
 * `s` dynamically populated with method `foo`
 * Ordered requests with transparent retries
-* Token based authentication
-* Support for multi-method transactions
+* Token-based authentication
+<!-- * Support for multi-method transactions -->
+
+---
+### Implementing a transactional actor
+```
+exports.methods = {
+    foo: function(something, cb) {
+        this.state.something = something;
+        this.$.session.notify("Got 'good'");
+        setTimeout(function() {
+            switch (something) {
+            case 'good':
+                cb(null, something); break; // Case 1
+            case 'bad':
+                cb(new Error('bad')); break; // Case 2
+            default:  // ugly
+                throw new Error('Oops'); // Case 3
+            }
+        }, 1000);
+    }
+}
+```
+<!-- .element: class="hljs javascript" spellCheck="false" -->
+
+1. Commit `this.state`, send notif, return `good`
+2. Roll back `this.state`, ignore notif, return app error
+3. Ditto, but return system error that closes client session
 
 ---
 
 
-### Implementing a transactional actor (2)
-
-**Behind the scenes**
+### Managing internal state
 
 ```
 exports.methods = {
@@ -173,29 +187,24 @@ exports.methods = {
 ...
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
-
-* Checkpoint `this.state` before externalization
-* Customizable hooks to initialize or recover `this.state`
-* `this.scratch` not checkpointed or rolled back
+* Optional ` __ca_init__` and `__ca_resume__` to initialize or recover `this.state`
+* `this.scratch` for state not checkpointed or rolled-back
 
 ---
-### Implementing a transactional actor (3)
+<!-- .element:  style="text-align:left" -->
+### Transactional plugins
+<!-- .element:  style="text-align:center" -->
 
-**Transactional plugins in `this.$`**
+For each message, the plugins in `this.$` join the application in a local 2PC protocol:
+* Delay external actions with a log
+* If anybody aborts
+  * Ignore non-committed actions, reset state
+* Otherwise
+  * Checkpoint commitments with a remote service
+  * Execute pending actions
+* Recovery after a failure retries actions in checkpoint
+    * Assumed idempotent
 
-```
-        this.$.session.notify("Got 'good'");
-```
-<!-- .element: class="hljs javascript" spellCheck="false" -->
-
-
-Participate in a local 2PC protocol with other plugins:
-
-* Scoped by the processing of a request
-* Log actions to delay external interactions
-* Ignore non-committed actions after any plugin aborts
-* Checkpoint commitments with a remote service
-* Retry committed (idempotent) actions after a failure
 
 ---
 ### Autonomous behavior
@@ -235,11 +244,9 @@ exports.methods = {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-Compare checkpointed state schema vs code schema:
-
-* Using *semver* versioning
-* Major version changes require custom upgrade code
-  * Called after resume but before message processing
+Compare checkpointed state *semver* version vs code
+* *Minor change*: transparent upgrade
+* *Major change*: custom upgrade code called before processing a new message
 
 
 ---
@@ -250,72 +257,83 @@ Compare checkpointed state schema vs code schema:
 
 ---
 <!-- .element:  style="text-align:left" -->
-### Limitations of pure actors
+### Actors Limitations
 <!-- .element:  style="text-align:center" -->
 
 * Inefficient to share data that is
-  * read by many, and rarely modified by a few
-* Pick your poison:
-  * Single-writer actor serves all read requests
-  * Data replicated across actors, multicast updates
-  * Some combination of the above
-* Faster to use distributed data structures that benefit from local shared-memory
+  * read by many
+  * and rarely modified by a few
+* Pick your poison
+  * One writer actor serves readers
+  * or replicate across actors, and multicast updates
+* Faster to use Distributed Data Structures (DDS)
+  * Local shared-memory
 * Combine DDS + Actors
-  * **Without data races, deadlocks, ugly failure mode!**
+  * **Without data races, deadlocks, or ugly failure mode!**
 
 ---
+<!-- .slide: class="two-floating-elements"  style="float: left" style="text-align:left"  -->
 ### DDS + Actors = Actors
+<!-- .element:  style="text-align:center" -->
 
 ![](process.env.CA_NAME/assets/sharing1.svg)
-<!-- .element:  width="500" heigh="500" -->
+<!-- .element: class="plain" style="float: right" width="50%" -->
 
-The Jocker can
+If the *Jocker* can
+* modify the state of **any** actor
+* at **any** time
 
-* change the internal state of **any** actor,
-* at **any** time,
-* to, for example, implement a DDS.
+it is trivial to implement a DDS
+
+**But**...
 
 ---
+<!-- .slide: class="two-floating-elements"  style="float: left" style="text-align:left"  -->
 ### DDS + Actors = Actors
+<!-- .element:  style="text-align:center" -->
 
 ![](process.env.CA_NAME/assets/sharing2.svg)
-<!-- .element:  width="500" heigh="500" -->
+<!-- .element: class="plain" style="float: right" width="50%" -->
 
-Can actors emulate the Jocker's actions?
 
-* Replace Jocker's changes by extra messages
-* But end result should be observationally equivalent
-    * Ignoring performance, an external entity cannot tell
+* Can actors emulate the *Jocker*'s actions?
+  * Replace changes with messages
+  * End result *observationally equivalent*
+    * external entity cannot tell
+* Emulation guarantees
+  * No data races
+  * No deadlocks
+  * Better failure mode
 
 ---
 ### DDS + Actors = Actors
 
 **Not** in the general case
 
-But **yes** in the following **important** case (Lesani&Lain13):
+But **yes** in the following **important** case (Lesani&Lain'13):
 
-1. *Single Writer*: one actor *owns* the data structure
-2. *Readers Isolation*: replicas change in-between messages
-3. *Fairness*: an actor cannot indefinitely block other local actors from seeing new updates
-4. *Writer Atomicity*: changes are flushed, as an atomic unit, when the processing of a message finishes.
-5. *Consistency*: monotonic read consistency, i.e., replicas can be stale, but never roll back to older versions.
+1. **Single Writer**: one actor *owns* a DDS instance
+2. **Readers Isolation**: replicas change between messages
+3. **Fairness**: an actor cannot **indefinitely** prevent other local actors from seeing new updates
+4. **Writer Atomicity**: bundle changes after each message
+5. **Monotonic Read Consistency**: replicas can be stale, but never roll back to older versions
 
 ---
 <!-- .element:  style="text-align:left" -->
-### SharedMap
+### SharedMap Implementation
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
-*Readers Isolation* + *Fairness* requires multiple local versions
+* **Single Writer** *SharedMap* name relative to its CA
+* **Readers Isolation** + **Fairness** with multiple local versions
+  * Persistent data structure for efficient versioning
+     * *Immutable.js*
+  * For each message
+     * pick the most recent version that is locally available
+     * keep version until the next message
+* **Writer Atomicity** use a CAF.js transactional plugin
+* **Monotonic Read Consistency** track version numbers
 
-* Use a persistent data structure (*Immutable.js*) for efficient versioning
-* For each message, pick the most recent version that is locally available
-* For a CA, keep version until the next message
 
-*Writer Atomicity*: Use a CAF.js transactional plugin
-
-*Consistency*: Keep track of version numbers
-
-*Single Writer*: a *SharedMap* name is relative to its CA
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -342,20 +360,13 @@ exports.methods = {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* Each user has an `admin` CA that keeps a counter in a *SharedMap*
-* CAs can use `masterMap()` and `isAdm()` to find it
+* Users have an `admin` CA with a counter in a *SharedMap*
+* CAs use `masterMap()` and `isAdm()` to find the map
 
 ---
 <!-- .element:  style="text-align:left" -->
-### Share code, not only data
-<!-- .element:  style="text-align:center" -->
-Pure functions serialized and stored in a *SharedMap*:
-
-    setFun(methodName, argsNameArray, bodyString)
-Invoked as a method of the *SharedMap*:
-
-    applyMethod(methodName, argsArray)
-Example:
+### Sharing Code with a SharedMap
+<!-- .element:  style="text-align:center; text-transform:none" -->
 ```
 var body = "return prefix + (this.get('base') + Math.random());";
 $$.master.setFun('computeLabel', ['prefix'], body);
@@ -363,8 +374,15 @@ $$.master.setFun('computeLabel', ['prefix'], body);
 $$.slave.applyMethod('computeLabel', ['myPrefix']));
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
-Uses:
-* Getters/setters hide schema versioning, event filtering, policy enforcement,...
+
+* `setFun` stores a serialized **pure** function
+* `applyMethod` invokes the function
+  * with `this` bound to the *SharedMap*
+* Glitch free behavior updates
+* Example uses
+  * Getters/setters to hide schema versioning
+  * Event filtering
+  * Policy enforcement
 
 ---
 ## Authorization
@@ -374,36 +392,36 @@ Uses:
 
 ---
 <!-- .element:  style="text-align:left" -->
-### Security Assumptions
+### Security Assumptions and Goals
 <!-- .element:  style="text-align:center" -->
-* Goal
-  * Write apps with safe **collaborative** multi-tenancy
-* Hosting framework controlled by the application writer
-    * Design framework and application together
-    * A node.js framework process runs only one app
-    * The service provider isolates apps using IaaS/PaaS
-* Apps never trust each other
-  * Cross-app interactions similar to the external world
-* Apps are not expected to run untrusted code but,
+* Write apps with safe **collaborative** multi-tenancy
+* Application writer co-designs framework+app
+    * one app per *node.js* process(es)
+* Apps expected to run trusted code but
   * for extra protection, frameworks do not fully trust apps
-  * Think about it as a parachute for programming mistakes
+* Apps never trust each other
+  * *app-to-app* similar to *app-to-external world*
+* Service provider never trusts apps or framework
+  * Isolates apps using IaaS/PaaS
 
 ---
-<!-- .element:  style="text-align:left" -->
+<!-- .slide: class="two-floating-elements"  style="float: left" style="text-align:left"  -->
 ### Security Mechanisms
 <!-- .element:  style="text-align:center" -->
+![](process.env.CA_NAME/assets/Mechanisms.svg)
+<!-- .element: class="plain" style="float: right" width="50%" -->
 
-* Authenticated Client Sessions
-  * Single sign-on without CA-in-the-middle
-  * Signed JSON Web Tokens, SRP, *accounts* service
-  * Semilattice to attenuate tokens
+* Authenticated client sessions with Single Sign-On
+  * signed JSON Web Tokens
+    * no CA-in-the-middle
+    * token semilattice
+  * SRP+accounts service
 * Application Trusted Bus
-  * For all interactions between CAs
-  * Source anti-spoofing of requests with security proxies
-  * Single-writer guarantees
-* Policy Engine
-  * Authorization based on linked local namespaces
-  * Focus of this talk
+  * safe interactions between CAs
+    * source anti-spoofing
+    * single-writer guarantees
+* Policy Engine (**focus of this talk**)
+  * linked local namespaces
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -413,15 +431,15 @@ Uses:
 * Core ideas from SDSI (Rivest&Lampson'96)
 * A principal is globally identified by his/her public key, or
   * username + public key of the `accounts` service.
-* A principal has a local namespace with names bound to:
-  * Owned resources: images, apps, CAs, *SharedMaps*,...
-  * Other principals: usernames or pub keys
-  * Links to other names, possibly in other namespaces
-  * Groups of the above
+* A principal has a **local namespace** with names bound to
+  * **owned resources**: images, apps, CAs, *SharedMaps*,...
+  * other **principals**: usernames or pub keys
+  * **links** to other names, possibly in other namespaces
+  * **groups** of the above
 * Linking is sound
   * *Principal + local name* is globally unique
-* Query by transitive closure to implement ACLs
-  * Start with matching local names, keep following links
+* Query by transitive closure implements ACLs
+  * start with matching local names, keep following links
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -429,34 +447,31 @@ Uses:
 <!-- .element:  style="text-align:center" -->
 
 * Decentralized authorization
-  * Easy to federate `accounts` services
+  * easy to federate `accounts` services
   * or sign your own tokens
 * Monotonicity
-  * Partial information leads to conservative decisions
+  * partial information leads to conservative decisions
 * Expressivity
-  * Concise ownership-based policies
-  * Built-in support for groups of
+  * concise ownership-based policies
+  * built-in support for groups of
     * resources, e.g., *all my apps*, or
     * principals, e.g., *all my friends*
 * Delegation
-  * Create groups by linking to other groups
+  * create groups by linking to other groups
 
 ---
 <!-- .element:  style="text-align:left" -->
 ### Novel implementation
 <!-- .element:  style="text-align:center" -->
 
-* Represent namespaces with *SharedMaps* not certificates
-  * Only within an app (see previous assumptions)
-  * Single-writer, i.e., by the owner, is a **strong** property
-  * Wrapper *AggregateMap* transparently manages linking
-* Users do not need to manage private keys
-  * Federated `accounts` services
-  * Authenticated client sessions
-* Advantages
-  * Revocation is fast (milliseconds)
-  * Discovery is efficient, and managed by the framework
-  * Properties of *Sharing Actors* lead to safe policy changes
+* *SharedMaps* represent namespaces
+  * single-writer is a **strong** property **within an app**
+  * wrapper *AggregateMap* transparently manages linking
+* Features
+  * no certificates or user private keys
+  * revocation is fast (milliseconds)
+  * discovery is efficient, and managed by the framework
+  * properties of *Sharing Actors* lead to **safe policy changes**
 
 ---
 
@@ -480,13 +495,13 @@ exports.methods = {
         !delegate && $$.acl.set(principal, true);
         delegate && $$.acl.set(LINK, addLink(authoMap(principal),
                                              $$.acl.get(LINK)));
-        ...
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* *Joe's* *admin* CA manages permissions for his CAs
-* *Susan* gets access to method `getCounter` in any of *Joe*'s CAs, when the *admin* CA writes to *SharedMap* `acl`,
-* or *Joe* can delegate by linking to her *admin* *SharedMap*.
+* *Joe's* CA `admin` manages permissions for his CAs
+* *Susan* can access `getCounter` in **any**  of *Joe*'s CAs if
+  * *Joe's* CA `admin` writes to *SharedMap* `acl`
+  * or *Joe* delegates by linking to her `admin` *SharedMap*
 
 ---
 
@@ -500,30 +515,33 @@ exports.methods = {
 ### Cookies...
 <!-- .element:  style="text-align:center" -->
 
-What's wrong with cookies for managing notifications?
+What's wrong with cookies for session management?
 
 * Chosen by the server, not by the client
 * Cannot have sensible, human-friendly, values
 * Do not move between devices
-* Browser-based, non-portable to basic gadgets
+* Browser-based, non-portable to gadgets
 
 ---
-<!-- .element:  style="text-align:left" -->
+<!-- .slide: class="two-floating-elements-70"  style="float: left" style="text-align:left"  -->
 ### A better cookie
 <!-- .element:  style="text-align:center" -->
 
-Add notification queues to an actor (CA)
+![](process.env.CA_NAME/assets/Queue.svg)
+<!-- .element: class="plain" style="float: right" width="30%" -->
 
-* Simple queue names that identify sessions
-  * Relative to its CA's name
-  * Chosen by the client
+* Add notification queues to a CA
+  * handle off-line clients
+* Queue name identify **session**
+  * simple name, relative to its CA
+  * chosen by the client
+* Queue contents visible to the CA
+  * apps manage undelivered notifications
 * Best effort delivery
-  * Concurrent dequeue, non-transactional
-  * Not checkpointed
-  * Supports off-line clients
-* Contents visible to the CA
-  * Application manages undelivered notifications
-* Built-in support in our **universal** client lib
+  * concurrent dequeue, non-transactional
+  * not checkpointed
+* Support in our **universal** client library
+  * browser, script, Cloud, and gadget
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -557,21 +575,24 @@ s.onmessage = function(msg) {
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
 ---
-<!-- .element:  style="text-align:left" -->
-#### Recoverable requests from stateless clients
-<!-- .element:  style="text-align:center" -->
+### Reliable stateless clients
+![](process.env.CA_NAME/assets/Toaster.svg)
+<!-- .element:  width="500" heigh="500" -->
 
-* Core ideas from Bernstein&Hsu&Mann'90
 * Stateless client crashes, or unplanned change of device
   * Guarantee that certain actions are only done once
-  * You didn't want two toasters, did you?
-* Client application
-  * Piggyback client memento to requests to identify last committed action
-  * Explicitly start and end a persistent session
-    * Client crashed if not properly ended
-    * When session re-opens, return memento if crashed
-* Leverage CA's transactions and message serialization
-  * Simulate a reliable queue per session for mementos
+  * You didn't want **two** toasters, did you?
+
+---
+### Recovery with a Persistent Session
+![](process.env.CA_NAME/assets/Recover.svg)
+<!-- .element:  width="500" heigh="500" -->
+
+* Core ideas from Bernstein&Hsu&Mann'90
+* Piggyback memento to identify last committed action
+* Explicitly start and end a persistent session
+    * If client crashed return memento
+* Implemented with CA transactions+message serialization
 
 ---
 ## Components
@@ -581,20 +602,18 @@ s.onmessage = function(msg) {
 
 ---
 <!-- .element:  style="text-align:left" -->
-### Components Everywhere
-<!-- .element:  style="text-align:center" -->
-* Core ideas from
-  * The SmartFrog Framework and Erlang/OTP
-* Describe a hierarchy of components with JSON
-  * Description templates, linking, and env properties
-* Asynchronous constructors, deterministic creation order
-  * Access *Redis* without blocking main loop
-  * Dependency injection
-  * CommonJS modules
-* Supervision tree
-  * Parent component monitors children,
-  * triggers local recovery,
-  * failure bubbles up if recovery fails.
+### CAF.js COMPONENTS
+<!-- .element:  style="text-align:center; text-transform:none" -->
+* Core ideas from the SmartFrog framework and Erlang/OTP
+* Describe a **hierarchy** of components with JSON
+  * templates, linking, and environment properties
+* Asynchronous constructors, **deterministic** creation order
+  * access services without blocking main loop
+  * dependency injection
+* Supervision tree, where a parent component
+    * monitors children
+    * triggers local recovery if needed
+    * bubbles up failure if local recovery fails
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -612,9 +631,9 @@ s.onmessage = function(msg) {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* `module`: implementation of this component
-* `name`: key to register the new component in local context
-* `env`: set of properties to configure the component
+* `module` implementation of this component
+* `name` key to register the new component in local context
+* `env` set of properties to configure the component
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -637,11 +656,11 @@ exports.newInstance = function($, spec, cb) {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* `newInstance`: factory method
-    * `$`: local context provided by its parent
-    * `spec`: parsed description from `hello.json`
-* `__ca_checkup__`: health check method
-* `__ca_shutdown__`: disable the component forever
+* `newInstance` is, by convention, a factory method
+    * `$` is the local context provided by its parent
+    * `spec` a parsed description from `hello.json`
+* `__ca_checkup__` health check method
+* `__ca_shutdown__` disable the component forever
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -659,12 +678,12 @@ main.load(null, null, 'hello.json', [module], function(err, $) {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* `load`:
+* `load`
   * reads and parses description
   * creates hierarchy
   * starts monitoring
-* `[module]`: specify path(s) to load resources
-* `$.foo.hello`: top level context with new component
+* `[module]` specify path(s) to load resources
+* `$.foo.hello` top level context with new component
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -683,14 +702,14 @@ main.load(null, {name: 'bar', env: {msg: 'Bye!'}}, 'hello.json',
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-Merge base configuration with `load` argument:
+Merge base configuration with
 
 * `{name: 'bar', env: {msg: 'Bye!'}}`
 
 ---
 
 <!-- .element:  style="text-align:left" -->
-### Hierarchy: helloTree.json
+### Hierarchy with helloTree.json
 <!-- .element:  style="text-align:center; text-transform:none" -->
 ```
 {
@@ -712,13 +731,14 @@ Merge base configuration with `load` argument:
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* Construction order: children in array-order first, then parent
+* Construction order: first, children in array-order, then parent
 * Destruction reverses this order
 * `caf_components#supervisor` similar to  `module.require("caf_components").supervisor`
+
 ---
 
 <!-- .element:  style="text-align:left" -->
-### Hierarchy: hello.js
+### Hierarchy with hello.js
 <!-- .element:  style="text-align:center; text-transform:none" -->
 ```
 exports.newInstance = function($, spec, cb) {
@@ -730,10 +750,12 @@ exports.newInstance = function($, spec, cb) {
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
 * Dependency injection
-  * Order components in description to satisfy dependencies
-  * Already created siblings in `$`
-  * Top level component is `$._` at any depth
-    * `$._.$` is the top level context
+  * description component order satisfies dependencies
+    * safe to call the logger plugin
+  * created sibling components in `$`
+  * top level component is `$._`
+    * and `$._.$` is the top level context
+
 ---
 
 <!-- .element:  style="text-align:left" -->
@@ -752,7 +774,7 @@ exports.newInstance = function($, spec, cb) {
 ---
 
 <!-- .element:  style="text-align:left" -->
-### Transforms: Templates (helloTree++.json)
+### Template Transform (helloTree++.json)
 <!-- .element:  style="text-align:center; text-transform:none" -->
 ```
 {
@@ -780,7 +802,7 @@ exports.newInstance = function($, spec, cb) {
 ---
 
 <!-- .element:  style="text-align:left" -->
-### Transforms: Linking (helloTree++.json)
+### Linking Transform (helloTree++.json)
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 ```
@@ -801,14 +823,14 @@ exports.newInstance = function($, spec, cb) {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* `$._.env`: links to properties in the top level component
-* Hides internal details for `load` arguments
-   * Merged top values propagate to inner components
+* `$._.env` links to properties in the top level component
+* Hides internal details from `load` arguments
+   * merged top values propagate to inner components
 
 ---
 
 <!-- .element:  style="text-align:left" -->
-### Transforms: Env Props (helloTree++.json)
+### Env Props Transform (helloTree++.json)
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 ```
@@ -830,23 +852,15 @@ exports.newInstance = function($, spec, cb) {
 ```
 <!-- .element: class="hljs javascript" spellCheck="false" -->
 
-* `process.env` : properties from the environment
-   * Default values with separator `||`
-     * Assumed JSON, if parsing fails defaults to string
+* `process.env` reads properties from the environment
+   * default values added with separator `||`
+     * assumes JSON, if parsing fails defaults to string
 
 ---
 ### Wrapping up
 
 ![](process.env.CA_NAME/assets/pig.svg)
-<!-- .element:  width="300" heigh="300" -->
-
-
-* Build three-way isomorphic apps with CAF.js
-  * Web app with React/Redux + our client library
-  * A CA in the Cloud
-  * A device app using `caf_iot`
-* Deploy in Cloud **and device** with Docker containers
-
+<!-- .element:  width="500" heigh="500" -->
 
 ---
 

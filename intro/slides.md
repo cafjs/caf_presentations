@@ -15,9 +15,9 @@ by Antonio Lain
 <!-- .element: class="plain" style="float: right" width="50%" -->
 
 * A front end programmer codesigns
-  * UI,
-  * a Cloud Assistant (CA),
-  * and  device logic,
+  * UI
+  * a Cloud Assistant (CA)
+  * and  device logic
   * all in JavaScript
 * Cost
   * 10 cents/year per CA
@@ -32,7 +32,7 @@ by Antonio Lain
 ![](process.env.CA_NAME/assets/Super_hero.svg)
 <!-- .element: class="plain" style="float: right" width="50%" -->
 
-* Get superpowers!
+* Get **superpowers**!
   * Permanent
   * Autonomous
   * Stateful
@@ -49,7 +49,7 @@ Let's see some examples
 
 
 * Remote background processing
-  * User believes all local
+  * User believes it is all local
 * Smooth app context switch with server-side rendering
     * proactive
     * made efficient with a CA
@@ -66,10 +66,10 @@ Let's see some examples
 <!-- .element: class="plain" style="float: right" width="32%" -->
 
 * Hot-swap code in
-  * millions of devices,
-  * every few seconds,
-  * glitch free, and with code
-  * created on the fly by CAs.
+  * millions of devices
+  * every few seconds
+  * glitch free
+  * and with code generated on-the-fly by CAs
 * Device-as-a-Browser
 
 
@@ -84,11 +84,11 @@ Let's see some examples
 <!-- .element: class="plain" style="float: right" width="50%" -->
 
 * **Make believe** the device
-  * is always ON,
-  * a few milliseconds away,
-  * ready to negotiate,
-  * inform,
-  * or react to an event.
+  * is always ON
+  * a few milliseconds away
+  * ready to negotiate
+  * inform
+  * or react to an event
 * Aggressive power saving
   * Standalone wearables
 * Low-latency interactions
@@ -110,10 +110,10 @@ Let's see some examples
   * no certificates
   * no long-term secrets per app
   * PFS and end-to-end security
-* Out-of-band Bluetooth pairing
-  * Delegation, groups, ownership
 * Social graph of devices
+  * Delegation, groups, ownership
   * Pair your friend's devices
+* Out-of-band Bluetooth pairing
 
 ---
 
@@ -128,13 +128,13 @@ Let's see some examples
 * Soft real-time pub/sub
   * Trigger actions with UTC time
   * Delay a few seconds to
-    * scale to millions of actions,
-    * <100 msec of each other,
-    * and across the globe.
+    * scale to millions of actions
+    * <100 msec of each other
+    * and across the globe
 * Bundle commands for safety
-  * cache whole bundles in device,
-  * piggyback recovery actions,
-  * ignore them if next bundle OK.
+  * Cache whole bundles in device
+  * Piggyback recovery actions
+  * Ignore them if next bundle OK
 * CA pipelines bundles
 
 ---
@@ -150,13 +150,14 @@ Let's see some examples
 
 * Debouncing Lambda with reliable state machines
 * Cloud file system of devices
-  * sync to local directory (s3fs),
-  * S3 event triggers lambda,
-  * and CA debounces.
-* CA-as-a-device-driver
-  * multi-vendor support
-* Git for managing many devices
-  * device config as code
+  1. Sync with local directory (s3fs)
+  2. Trigger Lambda with S3 event
+  3. Debounce with a CA
+  4. Control device
+* CA-as-a-Device-Driver
+  * Multi-vendor support
+* Manage many devices with Git
+  * Commit config changes
 
 ---
 
