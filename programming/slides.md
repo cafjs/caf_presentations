@@ -99,9 +99,9 @@ exports.methods = {
 
 Keeping a consistent internal state
 
-* for several years,
-* with a billion CAs,
-* programmed by back-end newbies.
+* for several years
+* with a billion CAs
+* programmed by back-end newbies
 
 ---
 ### CAF.js ACTORS TO THE RESCUE
