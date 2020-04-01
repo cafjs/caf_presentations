@@ -1,4 +1,4 @@
-## CAF.js PROGRAMMING
+## Caf.js PROGRAMMING
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 
@@ -17,7 +17,7 @@ by Antonio Lain
 ---
 <!-- .slide: class="two-floating-elements-70"  style="float: left" -->
 <!-- .element:  style="text-align:left" -->
-### A CAF.js ACTOR HAS
+### A Caf.js ACTOR HAS
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 ![](process.env.CA_NAME/assets/Actor.svg)
@@ -221,7 +221,7 @@ async computeLabel(prefix) { // Reader
 
 ---
 <!-- .slide: class="two-floating-elements"  style="float: left" style="text-align:left"  -->
-### Security in CAF.js
+### Security in Caf.js
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 ![](process.env.CA_NAME/assets/Mechanisms.svg)
@@ -312,7 +312,7 @@ What's **wrong** with cookies for session management?
 
 ---
 <!-- .slide: class="two-floating-elements-70"  style="float: left" style="text-align:left"  -->
-### Managing sessions in CAF.js
+### Managing sessions in Caf.js
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 ![](process.env.CA_NAME/assets/Queue.svg)
@@ -378,7 +378,7 @@ s.onmessage = function(msg) { //similar for 'car'
 
 ---
 <!-- .element:  style="text-align:left" -->
-### CAF.js COMPONENTS
+### Caf.js COMPONENTS
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 * Describe a **hierarchy** of components with JSON
@@ -391,7 +391,7 @@ s.onmessage = function(msg) { //similar for 'car'
     * triggers local recovery if needed,
     * and bubbles up failure if local recovery fails.
 * Based on the SmartFrog framework and Erlang/OTP
-* In CAF.js **everything** is built with components!
+* In Caf.js **everything** is built with components!
 
 ---
 
@@ -564,7 +564,7 @@ But **yes** in the following **important** case (Lesani&Lain'13):
   * For each message
      * pick the most recent version that is locally available
      * keep version until the next message
-* **Writer Atomicity** use a CAF.js transactional plugin
+* **Writer Atomicity** use a Caf.js transactional plugin
 * **Monotonic Read Consistency** track version numbers
 
 ---

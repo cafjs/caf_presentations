@@ -1,4 +1,4 @@
-## CAF.js APP LIFE CYCLE
+## Caf.js APP LIFE CYCLE
 <!-- .element:  style="text-transform:none" -->
 
 

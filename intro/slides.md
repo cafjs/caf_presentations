@@ -1,4 +1,4 @@
-## CAF.js
+## Caf.js
 <!-- .element:  style="text-transform:none" -->
 
 
