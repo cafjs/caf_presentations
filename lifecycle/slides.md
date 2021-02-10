@@ -2,17 +2,20 @@
 <!-- .element:  style="text-transform:none" -->
 
 
-![](process.env.CA_NAME/assets/gears.svg)
-<!-- .element:  class="plain" width="500" heigh="450" -->
+![](process.env.CA_NAME/assets/gears.svg) <!-- .element:  class="plain" width="500" heigh="450" -->
 
-by Antonio Lain
+
+
+Antonio Lain
+
+Caf.js Labs LLC
 
 ---
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Three-way isomorphic apps
 
 ![](process.env.CA_NAME/assets/Iso3.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width=50%" -->
 * CA in the Cloud executes
   * browser code
     * proactive server-side rendering
@@ -29,7 +32,7 @@ by Antonio Lain
 ### Containers everywhere
 
 ![](process.env.CA_NAME/assets/Containers.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width=50%" -->
 
 
 * Deploy in Cloud with containers

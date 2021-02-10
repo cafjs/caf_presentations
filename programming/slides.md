@@ -2,17 +2,15 @@
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
 
-![](process.env.CA_NAME/assets/pig.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig.svg)<!-- .element:  width="500" heigh="500" -->
 
-by Antonio Lain
+Antonio Lain, Caf.js Labs LLC
 
 ---
 
 ## Actors
 
-![](process.env.CA_NAME/assets/pig_actors.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig_actors.svg)<!-- .element:  width="500" heigh="500" -->
 
 ---
 <!-- .slide: class="two-floating-elements-70"  style="float: left" -->
@@ -20,8 +18,7 @@ by Antonio Lain
 ### A Caf.js ACTOR HAS
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
-![](process.env.CA_NAME/assets/Actor.svg)
-<!-- .element: class="plain" style="float: right" width="30%" -->
+![](process.env.CA_NAME/assets/Actor.svg) <!-- .element: class="plain" style="float: right; width:30%" -->
 * a queue that serializes message processing
 * a location-independent name
 * some private state
@@ -90,7 +87,7 @@ s.onclose = function(err) {
 ### Transactional Actors
 <!-- .element:  style="text-align:center" -->
 
-![](process.env.CA_NAME/assets/Rescue.svg)
+![](process.env.CA_NAME/assets/Rescue.svg)<!-- .element:  width="800" -->
 
 * Each request processed in a transaction
 * Delay external actions with transactional plugins
@@ -115,8 +112,7 @@ See https://cafjs.github.io/api/caf_ca/
 ## Sharing Actors
 
 
-![](process.env.CA_NAME/assets/pig_sharing.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig_sharing.svg)<!-- .element:  width="500" heigh="500" -->
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -216,16 +212,14 @@ async computeLabel(prefix) { // Reader
 ---
 ## Authorization
 
-![](process.env.CA_NAME/assets/pig_linked.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig_linked.svg)<!-- .element:  width="500" heigh="500" -->
 
 ---
 <!-- .slide: class="two-floating-elements"  style="float: left" style="text-align:left"  -->
 ### Security in Caf.js
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
-![](process.env.CA_NAME/assets/Mechanisms.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+![](process.env.CA_NAME/assets/Mechanisms.svg) <!-- .element: class="plain" style="float: right; width:40%" -->
 
 * Safe **collaborative** multi-tenancy
   * Help application programmers
@@ -295,8 +289,8 @@ async computeLabel(prefix) { // Reader
 ---
 ## Persistent Sessions
 
-![](process.env.CA_NAME/assets/pig_sessions.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig_sessions.svg) <!-- .element:  width="500" heigh="500" -->
+
 ---
 
 <!-- .element:  style="text-align:left" -->
@@ -315,8 +309,7 @@ What's **wrong** with cookies for session management?
 ### Managing sessions in Caf.js
 <!-- .element:  style="text-align:center; text-transform:none" -->
 
-![](process.env.CA_NAME/assets/Queue.svg)
-<!-- .element: class="plain" style="float: right" width="30%" -->
+![](process.env.CA_NAME/assets/Queue.svg) <!-- .element: class="plain" style="float: right; width:30%" -->
 
 * Add notification queues to an Actor
   * support off-line clients
@@ -361,8 +354,7 @@ s.onmessage = function(msg) { //similar for 'car'
 
 ---
 ### Reliable stateless clients
-![](process.env.CA_NAME/assets/Toaster.svg)
-<!-- .element:  width="400" heigh="400" -->
+![](process.env.CA_NAME/assets/Toaster.svg) <!-- .element:  width="400" heigh="400" -->
 
 * Stateless client crashes, or unplanned change of device
   * Guarantee that certain actions are only done once
@@ -373,8 +365,7 @@ s.onmessage = function(msg) { //similar for 'car'
 ---
 ## Components
 
-![](process.env.CA_NAME/assets/pig_components.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig_components.svg)<!-- .element:  width="500" heigh="500" -->
 
 ---
 <!-- .element:  style="text-align:left" -->
@@ -399,8 +390,7 @@ s.onmessage = function(msg) { //similar for 'car'
 ### Transforming Descriptions
 <!-- .element:  style="text-align:center" -->
 
-![](process.env.CA_NAME/assets/Transforms.svg)
-<!-- .element:  width="900" heigh="350" -->
+![](process.env.CA_NAME/assets/Transforms.svg)<!-- .element:  width="900" heigh="350" -->
 
 * Common deployment workflow
   * Customize base template
@@ -485,8 +475,7 @@ main.load(null, null, 'hello.json', [module], function(err, $) {
 ---
 ### Wrapping up
 
-![](process.env.CA_NAME/assets/pig.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/pig.svg)<!-- .element:  width="500" heigh="500" -->
 
 ---
 
@@ -508,8 +497,7 @@ Creative Commons 3.0
 ### DDS + Actors = Actors
 <!-- .element:  style="text-align:center" -->
 
-![](process.env.CA_NAME/assets/sharing1.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+![](process.env.CA_NAME/assets/sharing1.svg) <!-- .element: class="plain" style="float: right; width:50%" -->
 
 If the *Jocker* can
 * modify the state of **any** actor
@@ -524,8 +512,7 @@ it is trivial to implement a DDS
 ### DDS + Actors = Actors
 <!-- .element:  style="text-align:center" -->
 
-![](process.env.CA_NAME/assets/sharing2.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+![](process.env.CA_NAME/assets/sharing2.svg)<!-- .element: class="plain" style="float: right; width:50%" -->
 
 
 * Can actors emulate the *Jocker*'s actions?
@@ -585,8 +572,7 @@ But **yes** in the following **important** case (Lesani&Lain'13):
 ---
 
 ### Recovery with a Persistent Session
-![](process.env.CA_NAME/assets/Recover.svg)
-<!-- .element:  width="500" heigh="500" -->
+![](process.env.CA_NAME/assets/Recover.svg) <!-- .element:  width="500" heigh="500" -->
 
 * Core ideas from Bernstein&Hsu&Mann'90
 * Piggyback memento to identify last committed action

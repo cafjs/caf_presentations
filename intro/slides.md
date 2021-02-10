@@ -3,16 +3,18 @@
 
 
 ![](process.env.CA_NAME/assets/lever.gif)
-<!-- .element:  class="plain" width="750" heigh="500" -->
+<!-- .element:  class="r-stretch" -->
 
-by Antonio Lain
+Antonio Lain
+
+Caf.js Labs LLC
 
 ---
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Avatars for devices and web apps
 
 ![](process.env.CA_NAME/assets/ca1.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width: 50%" -->
 
 * A front end programmer codesigns
   * UI
@@ -30,7 +32,7 @@ by Antonio Lain
 <!-- .element:  style="text-transform:none" -->
 
 ![](process.env.CA_NAME/assets/Super_hero.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width: 50%" -->
 
 * Get **superpowers**!
   * Permanent
@@ -45,7 +47,7 @@ Let's see some examples
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Cloud-based multitasking
 ![](process.env.CA_NAME/assets/Multi.svg)
-<!-- .element: class="plain" style="float: right" width="35%" -->
+<!-- .element: class="plain" style="float: right; width:35%" -->
 
 
 * Remote background processing
@@ -63,7 +65,7 @@ Let's see some examples
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Dynamic device behavior
 ![](process.env.CA_NAME/assets/Dynamic.svg)
-<!-- .element: class="plain" style="float: right" width="32%" -->
+<!-- .element: class="plain" style="float: right; width:40%" -->
 
 * Hot-swap code in
   * millions of devices
@@ -81,7 +83,7 @@ Let's see some examples
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Impersonation
 ![](process.env.CA_NAME/assets/Impersonation.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width:50%" -->
 
 * **Make believe** the device
   * is always ON
@@ -103,7 +105,7 @@ Let's see some examples
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Secure pairing
 ![](process.env.CA_NAME/assets/Pairing.svg)
-<!-- .element: class="plain" style="float: right" width="40%" -->
+<!-- .element: class="plain" style="float: right; width:40%; margin:0" -->
 
 * Ephemeral DH public keys
   * exchanged with trusted bus
@@ -123,7 +125,7 @@ Let's see some examples
 <!-- .slide: class="two-floating-elements"  style="float: left" -->
 ### Timely coordination at scale
 ![](process.env.CA_NAME/assets/Timely.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width:50%" -->
 
 * Soft real-time pub/sub
   * Trigger actions with UTC time
@@ -146,7 +148,7 @@ Let's see some examples
 ### Stateful lambda (serverless)
 
 ![](process.env.CA_NAME/assets/Lambda.svg)
-<!-- .element: class="plain" style="float: right" width="50%" -->
+<!-- .element: class="plain" style="float: right; width:50%" -->
 
 * Debouncing Lambda with reliable state machines
 * Cloud file system of devices
@@ -176,6 +178,8 @@ Let's see some examples
 | Pairing        |  326  |  640 | 739 |
 | Timely         |  235  |  35 | 1107 |
 | Lambda         |  243  |  26 | 506 |
+<!-- .element: class="plain" style="width:60%;font-size: 1em; " -->
+
 
 All JavaScript...
 
